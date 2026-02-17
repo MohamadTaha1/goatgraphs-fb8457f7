@@ -1,33 +1,105 @@
-import { useEffect, useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Package, ShoppingCart, Users, DollarSign } from 'lucide-react';
+import { useEffect, useMemo, useState } from "react";
+import { DollarSign, FolderTree, Package, ShoppingCart, TriangleAlert } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+
+type Metric = {
+  products: number;
+  orders: number;
+  revenue: number;
+  categories: number;
+  lowStockVariants: number;
+};
 
 export default function Dashboard() {
-  const [stats, setStats] = useState({ products: 0, orders: 0, revenue: 0 });
+  const [stats, setStats] = useState<Metric>({
+    products: 0,
+    orders: 0,
+    revenue: 0,
+    categories: 0,
+    lowStockVariants: 0,
+  });
+  const [recentOrders, setRecentOrders] = useState<any[]>([]);
 
   useEffect(() => {
-    document.title = 'Admin Dashboard – GoatGraphs';
+    document.title = "Admin Dashboard - GoatGraphs";
     Promise.all([
-      supabase.from('products').select('id', { count: 'exact', head: true }),
-      supabase.from('orders').select('id, total'),
-    ]).then(([p, o]) => {
-      const orders = o.data || [];
+      supabase.from("products").select("id", { count: "exact", head: true }),
+      supabase.from("categories").select("id", { count: "exact", head: true }),
+      supabase.from("orders").select("id, total, status, created_at").order("created_at", { ascending: false }),
+      supabase.from("product_variants").select("id, stock").lte("stock", 5),
+    ]).then(([productsRes, categoriesRes, ordersRes, lowStockRes]) => {
+      const orders = ordersRes.data || [];
+      setRecentOrders(orders.slice(0, 6));
       setStats({
-        products: p.count || 0,
+        products: productsRes.count || 0,
+        categories: categoriesRes.count || 0,
         orders: orders.length,
-        revenue: orders.reduce((s, r) => s + Number(r.total), 0),
+        revenue: orders.reduce((sum, row) => sum + Number(row.total), 0),
+        lowStockVariants: (lowStockRes.data || []).length,
       });
     });
   }, []);
 
+  const cards = useMemo(
+    () => [
+      { label: "Products", value: stats.products.toString(), icon: Package },
+      { label: "Categories", value: stats.categories.toString(), icon: FolderTree },
+      { label: "Orders", value: stats.orders.toString(), icon: ShoppingCart },
+      { label: "Revenue", value: `$${stats.revenue.toFixed(2)}`, icon: DollarSign },
+    ],
+    [stats],
+  );
+
   return (
     <div>
-      <h2 className="text-xl font-bold mb-6">Dashboard</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <Card><CardHeader className="flex flex-row items-center justify-between pb-2"><CardTitle className="text-sm font-medium text-muted-foreground">Products</CardTitle><Package className="h-4 w-4 text-muted-foreground" /></CardHeader><CardContent><p className="text-2xl font-bold">{stats.products}</p></CardContent></Card>
-        <Card><CardHeader className="flex flex-row items-center justify-between pb-2"><CardTitle className="text-sm font-medium text-muted-foreground">Orders</CardTitle><ShoppingCart className="h-4 w-4 text-muted-foreground" /></CardHeader><CardContent><p className="text-2xl font-bold">{stats.orders}</p></CardContent></Card>
-        <Card><CardHeader className="flex flex-row items-center justify-between pb-2"><CardTitle className="text-sm font-medium text-muted-foreground">Revenue</CardTitle><DollarSign className="h-4 w-4 text-muted-foreground" /></CardHeader><CardContent><p className="text-2xl font-bold">${stats.revenue.toFixed(2)}</p></CardContent></Card>
+      <h2 className="text-2xl font-bold">Dashboard</h2>
+      <p className="mt-1 text-sm text-muted-foreground">Monitor store health and recent activity.</p>
+
+      <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        {cards.map(card => (
+          <div key={card.label} className="rounded-xl border border-border bg-muted/25 p-4">
+            <div className="mb-2 flex items-center justify-between">
+              <p className="text-xs uppercase tracking-[0.14em] text-muted-foreground">{card.label}</p>
+              <card.icon className="h-4 w-4 text-muted-foreground" />
+            </div>
+            <p className="text-2xl font-bold">{card.value}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-3 rounded-xl border border-amber-200 bg-amber-50 p-3 text-amber-900">
+        <p className="flex items-center gap-2 text-sm font-semibold">
+          <TriangleAlert className="h-4 w-4" />
+          {stats.lowStockVariants} variants are low on stock (5 or less units).
+        </p>
+      </div>
+
+      <div className="mt-6 overflow-x-auto rounded-xl border border-border">
+        <table className="min-w-full text-sm">
+          <thead className="bg-muted/60">
+            <tr>
+              <th className="p-3 text-left">Recent Orders</th>
+              <th className="p-3 text-left">Date</th>
+              <th className="p-3 text-left">Status</th>
+              <th className="p-3 text-right">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {recentOrders.map(order => (
+              <tr key={order.id} className="border-t border-border">
+                <td className="p-3 font-semibold">#{order.id.slice(0, 8).toUpperCase()}</td>
+                <td className="p-3 text-muted-foreground">{new Date(order.created_at).toLocaleDateString()}</td>
+                <td className="p-3 capitalize">{order.status}</td>
+                <td className="p-3 text-right font-semibold">${Number(order.total).toFixed(2)}</td>
+              </tr>
+            ))}
+            {!recentOrders.length && (
+              <tr>
+                <td colSpan={4} className="p-6 text-center text-muted-foreground">No orders yet.</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );

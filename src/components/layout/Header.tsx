@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Search, ShoppingBag, User, Menu, X, ChevronDown } from 'lucide-react';
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Menu, Search, ShoppingBag, User, X } from "lucide-react";
 import { useAuth } from '@/contexts/AuthContext';
 import { useCart } from '@/contexts/CartContext';
 import { Button } from '@/components/ui/button';
@@ -34,66 +34,70 @@ export default function Header() {
 
   return (
     <>
-      {/* Top banner */}
-      <div className="bg-foreground text-background text-center text-xs py-2 font-medium tracking-wide">
-        FREE SHIPPING ON ORDERS OVER $150 | AUTHENTIC JERSEYS ONLY
+      <div className="aurora text-white">
+        <div className="container py-2 text-center text-[11px] font-semibold tracking-[0.16em] sm:text-xs">
+          FREE SHIPPING OVER $150 | VERIFIED AUTHENTIC JERSEYS
+        </div>
       </div>
 
-      <header className="sticky top-0 z-50 bg-background border-b border-border">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between gap-4">
-          {/* Mobile menu */}
-          <button onClick={() => setMobileOpen(true)} className="lg:hidden p-2 -ml-2">
+      <header className="sticky top-0 z-50 border-b border-border/70 bg-background/90 backdrop-blur-lg">
+        <div className="container flex h-16 items-center justify-between gap-2 sm:gap-4">
+          <button
+            type="button"
+            aria-label="Open navigation"
+            onClick={() => setMobileOpen(true)}
+            className="rounded-md p-2 transition-colors hover:bg-muted lg:hidden"
+          >
             <Menu className="h-5 w-5" />
           </button>
 
-          {/* Logo */}
-          <Link to="/" className="font-black text-xl tracking-tight shrink-0">
-            GOATGRAPHS
+          <Link to="/" className="shrink-0">
+            <span className="block font-black text-lg leading-none tracking-tight sm:text-xl">GOATGRAPHS</span>
+            <span className="hidden text-[10px] uppercase tracking-[0.2em] text-muted-foreground sm:block">Curated Matchwear</span>
           </Link>
 
-          {/* Desktop nav */}
-          <nav className="hidden lg:flex items-center gap-8 text-sm font-medium">
+          <nav className="hidden items-center gap-7 text-sm font-semibold lg:flex">
             {navLinks.map(link => (
-              <Link key={link.href} to={link.href} className="hover:text-primary transition-colors">
+              <Link key={link.href} to={link.href} className="text-foreground/80 transition-colors hover:text-foreground">
                 {link.label}
               </Link>
             ))}
           </nav>
 
-          {/* Actions */}
-          <div className="flex items-center gap-2">
-            {/* Search */}
-            <button onClick={() => setSearchOpen(!searchOpen)} className="p-2 hover:text-primary transition-colors">
+          <div className="flex items-center gap-1 sm:gap-2">
+            <button
+              type="button"
+              aria-label="Search"
+              onClick={() => setSearchOpen(!searchOpen)}
+              className="rounded-md p-2 transition-colors hover:bg-muted"
+            >
               <Search className="h-5 w-5" />
             </button>
 
-            {/* User */}
-            <Link to={user ? '/account' : '/auth'} className="p-2 hover:text-primary transition-colors">
+            <Link to={user ? "/account" : "/auth"} aria-label="Account" className="rounded-md p-2 transition-colors hover:bg-muted">
               <User className="h-5 w-5" />
             </Link>
 
-            {/* Cart */}
-            <Link to="/cart" className="p-2 hover:text-primary transition-colors relative">
+            <Link to="/cart" aria-label="Cart" className="relative rounded-md p-2 transition-colors hover:bg-muted">
               <ShoppingBag className="h-5 w-5" />
               {itemCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 bg-primary text-primary-foreground text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
+                <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
                   {itemCount}
                 </span>
               )}
             </Link>
 
             {isAdmin && (
-              <Link to="/admin" className="hidden lg:block">
-                <Button variant="outline" size="sm">Admin</Button>
+              <Link to="/admin" className="hidden md:block">
+                <Button variant="outline" size="sm" className="font-semibold">Admin</Button>
               </Link>
             )}
           </div>
         </div>
 
-        {/* Search overlay */}
         {searchOpen && (
-          <div className="border-t border-border bg-background p-4">
-            <form onSubmit={handleSearch} className="container mx-auto max-w-2xl flex gap-2">
+          <div className="border-t border-border/70 bg-background/95 px-4 py-4 backdrop-blur">
+            <form onSubmit={handleSearch} className="container mx-auto flex max-w-3xl gap-2">
               <Input
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
@@ -101,8 +105,8 @@ export default function Header() {
                 autoFocus
                 className="flex-1"
               />
-              <Button type="submit">Search</Button>
-              <button type="button" onClick={() => setSearchOpen(false)} className="p-2">
+              <Button type="submit" className="font-semibold">Search</Button>
+              <button type="button" aria-label="Close search" onClick={() => setSearchOpen(false)} className="rounded-md p-2 hover:bg-muted">
                 <X className="h-5 w-5" />
               </button>
             </form>

@@ -14,21 +14,21 @@ interface Props {
 
 export default function ProductCard({ slug, title, price, salePrice, image, teamName, jerseyType, seasonName }: Props) {
   return (
-    <Link to={`/product/${slug}`} className="group block">
-      <div className="aspect-square bg-muted rounded-lg overflow-hidden mb-3">
+    <Link to={`/product/${slug}`} className="group surface-link block rounded-2xl p-2">
+      <div className="aspect-square overflow-hidden rounded-xl bg-muted">
         {image ? (
-          <img src={image} alt={title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+          <img src={image} alt={title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-muted-foreground text-sm">No Image</div>
+          <div className="flex h-full w-full items-center justify-center text-sm text-muted-foreground">No Image</div>
         )}
       </div>
-      <div className="space-y-1">
-        <div className="flex gap-1 flex-wrap">
+      <div className="space-y-1 px-1 pb-1 pt-3">
+        <div className="flex flex-wrap gap-1">
           {teamName && <Badge variant="secondary" className="text-[10px] font-medium">{teamName}</Badge>}
           {jerseyType && <Badge variant="outline" className="text-[10px] font-medium">{jerseyType}</Badge>}
           {seasonName && <Badge variant="outline" className="text-[10px] font-medium">{seasonName}</Badge>}
         </div>
-        <h3 className="font-semibold text-sm leading-tight group-hover:text-primary transition-colors line-clamp-2">{title}</h3>
+        <h3 className="line-clamp-2 text-sm font-semibold leading-tight transition-colors group-hover:text-primary">{title}</h3>
         <div className="flex items-center gap-2">
           {salePrice ? (
             <>

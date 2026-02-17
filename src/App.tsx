@@ -21,6 +21,7 @@ import Account from "./pages/Account";
 import Profile from "./pages/account/Profile";
 import Orders from "./pages/account/Orders";
 import OrderDetail from "./pages/account/OrderDetail";
+import Addresses from "./pages/account/Addresses";
 import About from "./pages/About";
 import FAQ from "./pages/FAQ";
 import ShippingReturns from "./pages/ShippingReturns";
@@ -66,20 +67,21 @@ const App = () => (
                   <Route path="profile" element={<Profile />} />
                   <Route path="orders" element={<Orders />} />
                   <Route path="orders/:id" element={<OrderDetail />} />
-                </Route>
-
-                <Route path="/admin" element={<AdminGuard><AdminLayout /></AdminGuard>}>
-                  <Route index element={<Dashboard />} />
-                  <Route path="products" element={<Products />} />
-                  <Route path="products/new" element={<ProductForm />} />
-                  <Route path="products/:id/edit" element={<ProductForm />} />
-                  <Route path="categories" element={<Categories />} />
-                  <Route path="orders" element={<AdminOrders />} />
-                  <Route path="promo-codes" element={<PromoCodes />} />
-                  <Route path="inventory" element={<Inventory />} />
+                  <Route path="addresses" element={<Addresses />} />
                 </Route>
 
                 <Route path="*" element={<NotFound />} />
+              </Route>
+
+              <Route path="/admin" element={<AdminGuard><AdminLayout /></AdminGuard>}>
+                <Route index element={<Dashboard />} />
+                <Route path="products" element={<Products />} />
+                <Route path="products/new" element={<ProductForm />} />
+                <Route path="products/:id/edit" element={<ProductForm />} />
+                <Route path="categories" element={<Categories />} />
+                <Route path="orders" element={<AdminOrders />} />
+                <Route path="promo-codes" element={<PromoCodes />} />
+                <Route path="inventory" element={<Inventory />} />
               </Route>
             </Routes>
           </CartProvider>

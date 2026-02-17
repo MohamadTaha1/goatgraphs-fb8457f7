@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import { X } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
+import { Button } from '@/components/ui/button';
 
 interface Props { open: boolean; onClose: () => void; }
 
@@ -20,26 +20,32 @@ export default function MobileNav({ open, onClose }: Props) {
   const { user, isAdmin, signOut } = useAuth();
 
   return (
-    <Sheet open={open} onOpenChange={onClose}>
-      <SheetContent side="left" className="w-80 p-0">
-        <div className="p-6 border-b border-border flex items-center justify-between">
-          <span className="font-black text-lg">GOATGRAPHS</span>
+    <Sheet open={open} onOpenChange={(nextOpen) => { if (!nextOpen) onClose(); }}>
+      <SheetContent side="left" className="w-[88vw] max-w-sm p-0">
+        <div className="aurora p-6 text-white">
+          <span className="font-black text-xl tracking-tight">GOATGRAPHS</span>
+          <p className="mt-1 text-xs uppercase tracking-[0.18em] text-white/80">Navigation</p>
         </div>
-        <nav className="p-6 space-y-4">
+        <nav className="space-y-2 p-6">
           {links.map(l => (
-            <Link key={l.href} to={l.href} onClick={onClose} className="block text-lg font-medium hover:text-primary transition-colors">
+            <Link
+              key={l.href}
+              to={l.href}
+              onClick={onClose}
+              className="block rounded-lg border border-transparent px-3 py-2 text-base font-semibold transition-colors hover:border-border hover:bg-muted"
+            >
               {l.label}
             </Link>
           ))}
-          <div className="border-t border-border pt-4 mt-4 space-y-4">
+          <div className="mt-4 space-y-2 border-t border-border pt-4">
             {user ? (
               <>
-                <Link to="/account" onClick={onClose} className="block text-lg font-medium">My Account</Link>
-                {isAdmin && <Link to="/admin" onClick={onClose} className="block text-lg font-medium">Admin</Link>}
-                <button onClick={() => { signOut(); onClose(); }} className="block text-lg font-medium text-destructive">Sign Out</button>
+                <Link to="/account" onClick={onClose} className="block rounded-lg px-3 py-2 text-base font-semibold hover:bg-muted">My Account</Link>
+                {isAdmin && <Link to="/admin" onClick={onClose} className="block rounded-lg px-3 py-2 text-base font-semibold hover:bg-muted">Admin</Link>}
+                <Button variant="destructive" className="w-full justify-start" onClick={() => { signOut(); onClose(); }}>Sign Out</Button>
               </>
             ) : (
-              <Link to="/auth" onClick={onClose} className="block text-lg font-medium">Sign In</Link>
+              <Link to="/auth" onClick={onClose} className="block rounded-lg bg-primary px-3 py-2 text-base font-semibold text-primary-foreground">Sign In</Link>
             )}
           </div>
         </nav>

@@ -1,29 +1,32 @@
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
 export default function ShippingReturns() {
-  useEffect(() => { document.title = 'Shipping & Returns – GoatGraphs'; }, []);
+  useEffect(() => {
+    document.title = "Shipping & Returns - GoatGraphs";
+  }, []);
+
   return (
-    <div className="container mx-auto px-4 py-16 max-w-3xl">
-      <h1 className="text-4xl font-black tracking-tight mb-8">SHIPPING & RETURNS</h1>
-      <div className="space-y-8">
-        <section>
-          <h2 className="text-xl font-bold mb-3">Shipping</h2>
-          <div className="text-muted-foreground space-y-2">
-            <p>We offer two shipping methods:</p>
-            <ul className="list-disc pl-5 space-y-1">
-              <li><strong>Standard Shipping (5-7 business days):</strong> $9.99, free on orders over $150</li>
-              <li><strong>Express Shipping (2-3 business days):</strong> $15.00</li>
+    <div className="container py-14">
+      <div className="mx-auto max-w-4xl">
+        <h1 className="display-title text-4xl sm:text-5xl">Shipping & Returns</h1>
+        <div className="mt-6 grid gap-4 md:grid-cols-2">
+          <section className="soft-panel p-6">
+            <h2 className="text-2xl font-bold">Shipping</h2>
+            <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+              <li>Standard (5-7 business days): $9.99, free on orders over $150.</li>
+              <li>Express (2-3 business days): $15.00.</li>
+              <li>International delivery available with destination-based rates.</li>
             </ul>
-            <p>International shipping is available. Rates and delivery times vary by destination.</p>
-          </div>
-        </section>
-        <section>
-          <h2 className="text-xl font-bold mb-3">Returns</h2>
-          <div className="text-muted-foreground space-y-2">
-            <p>We accept returns within 30 days of delivery for unworn items in original condition with all tags attached.</p>
-            <p>To initiate a return, please contact our support team via the Contact page. Return shipping costs are the buyer's responsibility unless the item was received defective or incorrect.</p>
-          </div>
-        </section>
+          </section>
+          <section className="soft-panel p-6">
+            <h2 className="text-2xl font-bold">Returns</h2>
+            <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+              <li>Returns accepted within 30 days of delivery.</li>
+              <li>Items must be unworn with original tags and packaging.</li>
+              <li>For return support, contact us from the Contact page.</li>
+            </ul>
+          </section>
+        </div>
       </div>
     </div>
   );

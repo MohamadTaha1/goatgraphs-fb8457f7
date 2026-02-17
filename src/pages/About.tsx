@@ -1,14 +1,25 @@
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
 export default function About() {
-  useEffect(() => { document.title = 'About – GoatGraphs'; }, []);
+  useEffect(() => {
+    document.title = "About - GoatGraphs";
+  }, []);
+
   return (
-    <div className="container mx-auto px-4 py-16 max-w-3xl">
-      <h1 className="text-4xl font-black tracking-tight mb-8">ABOUT GOATGRAPHS</h1>
-      <div className="prose prose-lg max-w-none space-y-6 text-muted-foreground">
-        <p>GoatGraphs is your premier destination for authentic football jerseys from the world's greatest clubs and national teams. We specialize in match-worn, player-issue, and authentic replica jerseys that tell the story of the beautiful game.</p>
-        <p>Founded by passionate football collectors, we understand the value of authenticity. Every jersey in our collection is verified and comes with a certificate of authenticity.</p>
-        <p>Whether you're looking for the latest season's kit or a rare vintage piece, GoatGraphs has you covered with an extensive selection from leagues across the globe.</p>
+    <div className="container py-14">
+      <div className="mx-auto max-w-4xl">
+        <h1 className="display-title text-4xl sm:text-5xl">About GoatGraphs</h1>
+        <div className="soft-panel mt-6 space-y-5 p-6 text-muted-foreground sm:p-8">
+          <p>
+            GoatGraphs is a football jersey store focused on authentic shirts from clubs and national teams. We built this platform to make discovery, checkout, and order tracking clear on every device.
+          </p>
+          <p>
+            Our catalog combines current season drops and collectible pieces. Every listing is verified, well-labeled, and managed through a full admin control panel.
+          </p>
+          <p>
+            From browsing to after-sale support, the goal is reliability: transparent shipping, straightforward returns, and clean account tools for repeat orders.
+          </p>
+        </div>
       </div>
     </div>
   );
