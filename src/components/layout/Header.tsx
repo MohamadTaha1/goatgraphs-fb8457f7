@@ -74,7 +74,7 @@ export default function Header() {
               <Search className="h-5 w-5" />
             </button>
 
-            <Link to={user ? "/account" : "/auth"} aria-label="Account" className="rounded-md p-2 transition-colors hover:bg-muted">
+            <Link to={user ? (isAdmin ? "/admin" : "/account") : "/auth"} aria-label="Account" className="rounded-md p-2 transition-colors hover:bg-muted">
               <User className="h-5 w-5" />
             </Link>
 

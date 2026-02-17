@@ -56,8 +56,41 @@ export default function AdminOrders() {
         <Input value={query} onChange={e => setQuery(e.target.value)} placeholder="Search orders" className="pl-9" />
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-border">
-        <table className="min-w-[860px] w-full text-sm">
+      <div className="space-y-2 md:hidden">
+        {filtered.map(order => (
+          <div key={order.id} className="rounded-xl border border-border p-3">
+            <div className="flex items-center justify-between gap-2">
+              <p className="font-semibold">#{order.id.slice(0, 8).toUpperCase()}</p>
+              <p className="text-xs text-muted-foreground">{new Date(order.created_at).toLocaleDateString()}</p>
+            </div>
+            <div className="mt-2 grid grid-cols-2 gap-2 text-sm">
+              <div>
+                <p className="text-xs text-muted-foreground">Total</p>
+                <p className="font-semibold">${Number(order.total).toFixed(2)}</p>
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground">Payment</p>
+                <p className="capitalize">{order.payment_method}</p>
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground">Shipping</p>
+                <p className="capitalize">{order.shipping_method}</p>
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground">Status</p>
+                <Select value={order.status} onValueChange={value => updateStatus(order.id, value)}>
+                  <SelectTrigger className="mt-1 h-8 w-full"><SelectValue /></SelectTrigger>
+                  <SelectContent>{STATUSES.map(status => <SelectItem key={status} value={status} className="capitalize">{status}</SelectItem>)}</SelectContent>
+                </Select>
+              </div>
+            </div>
+          </div>
+        ))}
+        {!filtered.length && <p className="py-6 text-center text-muted-foreground">No orders found.</p>}
+      </div>
+
+      <div className="hidden overflow-x-auto rounded-xl border border-border md:block">
+        <table className="w-full min-w-[860px] text-sm">
           <thead className="bg-muted/60">
             <tr>
               <th className="p-3 text-left">Order</th>

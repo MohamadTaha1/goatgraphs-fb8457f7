@@ -40,8 +40,10 @@ export default function MobileNav({ open, onClose }: Props) {
           <div className="mt-4 space-y-2 border-t border-border pt-4">
             {user ? (
               <>
-                <Link to="/account" onClick={onClose} className="block rounded-lg px-3 py-2 text-base font-semibold hover:bg-muted">My Account</Link>
-                {isAdmin && <Link to="/admin" onClick={onClose} className="block rounded-lg px-3 py-2 text-base font-semibold hover:bg-muted">Admin</Link>}
+                <Link to={isAdmin ? "/admin" : "/account"} onClick={onClose} className="block rounded-lg px-3 py-2 text-base font-semibold hover:bg-muted">
+                  {isAdmin ? "Admin Dashboard" : "My Account"}
+                </Link>
+                {isAdmin && <Link to="/account" onClick={onClose} className="block rounded-lg px-3 py-2 text-base font-semibold hover:bg-muted">Customer Account</Link>}
                 <Button variant="destructive" className="w-full justify-start" onClick={() => { signOut(); onClose(); }}>Sign Out</Button>
               </>
             ) : (

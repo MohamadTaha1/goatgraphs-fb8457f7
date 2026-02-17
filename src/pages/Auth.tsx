@@ -15,7 +15,7 @@ export default function Auth() {
   const [fullName, setFullName] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const { signIn, signUp, resetPassword, user } = useAuth();
+  const { signIn, signUp, resetPassword, user, isAdmin, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -24,8 +24,10 @@ export default function Auth() {
   }, []);
 
   useEffect(() => {
-    if (user) navigate("/account");
-  }, [user, navigate]);
+    if (!authLoading && user) {
+      navigate(isAdmin ? "/admin" : "/account", { replace: true });
+    }
+  }, [authLoading, user, isAdmin, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

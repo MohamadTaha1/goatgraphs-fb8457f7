@@ -58,8 +58,48 @@ export default function Products() {
         <Input value={query} onChange={e => setQuery(e.target.value)} placeholder="Search by title or slug" className="pl-9" />
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-border">
-        <table className="min-w-[760px] w-full text-sm">
+      <div className="space-y-2 md:hidden">
+        {filtered.map(product => (
+          <div key={product.id} className="rounded-xl border border-border p-3">
+            <div className="flex items-start gap-3">
+              <div className="h-14 w-14 shrink-0 overflow-hidden rounded-md bg-muted">
+                {product.product_images?.[0]?.url && <img src={product.product_images[0].url} className="h-full w-full object-cover" />}
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="line-clamp-1 font-semibold">{product.title}</p>
+                <p className="line-clamp-1 text-xs text-muted-foreground">{product.slug}</p>
+                <p className="mt-1 text-sm font-semibold">${Number(product.sale_price || product.price).toFixed(2)}</p>
+              </div>
+            </div>
+            <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
+              <label className="flex items-center justify-between rounded-md border border-border px-2 py-1.5">
+                Active
+                <Switch checked={!!product.is_active} onCheckedChange={value => updateFlag(product.id, "is_active", value)} />
+              </label>
+              <label className="flex items-center justify-between rounded-md border border-border px-2 py-1.5">
+                Featured
+                <Switch checked={!!product.is_featured} onCheckedChange={value => updateFlag(product.id, "is_featured", value)} />
+              </label>
+            </div>
+            <div className="mt-3 flex gap-2">
+              <Button asChild size="sm" variant="outline" className="flex-1">
+                <Link to={`/admin/products/${product.id}/edit`}>
+                  <Edit className="mr-1 h-3.5 w-3.5" />
+                  Edit
+                </Link>
+              </Button>
+              <Button size="sm" variant="destructive" className="flex-1" onClick={() => del(product.id)}>
+                <Trash2 className="mr-1 h-3.5 w-3.5" />
+                Delete
+              </Button>
+            </div>
+          </div>
+        ))}
+        {!filtered.length && <p className="py-6 text-center text-muted-foreground">No products found.</p>}
+      </div>
+
+      <div className="hidden overflow-x-auto rounded-xl border border-border md:block">
+        <table className="w-full min-w-[760px] text-sm">
           <thead className="bg-muted/60">
             <tr>
               <th className="p-3 text-left">Image</th>
@@ -82,9 +122,7 @@ export default function Products() {
                   <p className="font-semibold">{product.title}</p>
                   <p className="text-xs text-muted-foreground">{product.slug}</p>
                 </td>
-                <td className="p-3 text-right font-semibold">
-                  ${Number(product.sale_price || product.price).toFixed(2)}
-                </td>
+                <td className="p-3 text-right font-semibold">${Number(product.sale_price || product.price).toFixed(2)}</td>
                 <td className="p-3 text-center">
                   <Switch checked={!!product.is_active} onCheckedChange={value => updateFlag(product.id, "is_active", value)} />
                 </td>
