@@ -31,16 +31,16 @@ export default function Footer() {
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
           <div className="col-span-2 md:col-span-1">
             <h3 className="mb-4 text-xl font-black">GOATGRAPHS</h3>
-            <p className="text-sm leading-relaxed text-background/70">Premium authentic football jerseys. Every shirt tells a story.</p>
+            <p className="text-sm leading-relaxed text-background/60">Premium authentic football jerseys. Every shirt tells a story.</p>
           </div>
 
           {footerLinks.map(section => (
             <div key={section.title}>
-              <h4 className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-background/50">{section.title}</h4>
+              <h4 className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-background/40">{section.title}</h4>
               <ul className="space-y-2">
                 {section.links.map(link => (
                   <li key={link.href}>
-                    <Link to={link.href} className="text-sm text-background/75 transition-colors hover:text-background">
+                    <Link to={link.href} className="text-sm text-background/60 transition-colors hover:text-background">
                       {link.label}
                     </Link>
                   </li>
@@ -50,8 +50,8 @@ export default function Footer() {
           ))}
         </div>
 
-        <div className="mt-10 border-t border-background/10 pt-6 text-center text-xs text-background/50">
-          (c) {new Date().getFullYear()} GoatGraphs. All rights reserved.
+        <div className="mt-10 border-t border-background/10 pt-6 text-center text-xs text-background/40">
+          © {new Date().getFullYear()} GoatGraphs. All rights reserved.
         </div>
       </div>
     </footer>

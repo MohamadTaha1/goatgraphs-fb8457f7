@@ -61,14 +61,15 @@ export default function Auth() {
 
   return (
     <div className="container py-16">
-      <div className="mx-auto grid max-w-5xl overflow-hidden rounded-3xl border border-border/80 bg-white/80 shadow-xl shadow-slate-900/10 backdrop-blur md:grid-cols-2">
-        <div className="aurora hidden p-8 text-white md:flex md:flex-col md:justify-between">
+      <div className="mx-auto grid max-w-5xl overflow-hidden rounded-3xl border border-border/60 bg-card shadow-xl md:grid-cols-2">
+        {/* Left panel */}
+        <div className="hidden bg-foreground p-8 text-background md:flex md:flex-col md:justify-between">
           <div>
-            <p className="text-xs uppercase tracking-[0.16em] text-white/70">Welcome Back</p>
-            <h1 className="mt-3 text-4xl font-black leading-tight">Access your matchday account.</h1>
-            <p className="mt-4 text-sm text-white/80">Track orders, manage addresses, and save your favorite club and national kits.</p>
+            <p className="text-xs uppercase tracking-[0.16em] text-background/50">Welcome Back</p>
+            <h1 className="mt-3 text-4xl font-black leading-tight">Access your <span className="text-primary">matchday</span> account.</h1>
+            <p className="mt-4 text-sm text-background/60">Track orders, manage addresses, and save your favorite club and national kits.</p>
           </div>
-          <p className="text-xs text-white/70">Secure authentication powered by Supabase.</p>
+          <p className="text-xs text-background/40">Secure authentication powered by Supabase.</p>
         </div>
 
         <div className="p-6 sm:p-8">

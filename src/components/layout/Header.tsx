@@ -9,8 +9,8 @@ import MobileNav from './MobileNav';
 
 const navLinks = [
   { label: 'Shop All', href: '/shop' },
-  { label: 'Teams', href: '/shop/team/all', children: [] },
-  { label: 'Leagues', href: '/shop/league/all', children: [] },
+  { label: 'Teams', href: '/shop/team/all' },
+  { label: 'Leagues', href: '/shop/league/all' },
   { label: 'Countries', href: '/shop/country/all' },
   { label: 'New Arrivals', href: '/shop?sort=newest' },
 ];
@@ -34,13 +34,13 @@ export default function Header() {
 
   return (
     <>
-      <div className="aurora text-white">
-        <div className="container py-2 text-center text-[11px] font-semibold tracking-[0.16em] sm:text-xs">
-          FREE SHIPPING OVER $150 | VERIFIED AUTHENTIC JERSEYS
+      <div className="bg-foreground text-background">
+        <div className="container py-2 text-center text-[11px] font-semibold uppercase tracking-[0.16em] text-background/70 sm:text-xs">
+          Free Shipping Over $150 · Verified Authentic Jerseys
         </div>
       </div>
 
-      <header className="sticky top-0 z-50 border-b border-border/70 bg-background/90 backdrop-blur-lg">
+      <header className="sticky top-0 z-50 border-b border-border/60 bg-background/95 backdrop-blur-lg">
         <div className="container flex h-16 items-center justify-between gap-2 sm:gap-4">
           <button
             type="button"
@@ -52,13 +52,13 @@ export default function Header() {
           </button>
 
           <Link to="/" className="shrink-0">
-            <span className="block font-black text-lg leading-none tracking-tight sm:text-xl">GOATGRAPHS</span>
-            <span className="hidden text-[10px] uppercase tracking-[0.2em] text-muted-foreground sm:block">Curated Matchwear</span>
+            <span className="block text-lg font-black leading-none tracking-tight sm:text-xl">GOATGRAPHS</span>
+            <span className="hidden text-[10px] uppercase tracking-[0.2em] text-muted-foreground sm:block">Premium Matchwear</span>
           </Link>
 
           <nav className="hidden items-center gap-7 text-sm font-semibold lg:flex">
             {navLinks.map(link => (
-              <Link key={link.href} to={link.href} className="text-foreground/80 transition-colors hover:text-foreground">
+              <Link key={link.href} to={link.href} className="text-foreground/70 transition-colors hover:text-foreground">
                 {link.label}
               </Link>
             ))}
@@ -96,7 +96,7 @@ export default function Header() {
         </div>
 
         {searchOpen && (
-          <div className="border-t border-border/70 bg-background/95 px-4 py-4 backdrop-blur">
+          <div className="border-t border-border/60 bg-background/95 px-4 py-4 backdrop-blur">
             <form onSubmit={handleSearch} className="container mx-auto flex max-w-3xl gap-2">
               <Input
                 value={searchQuery}

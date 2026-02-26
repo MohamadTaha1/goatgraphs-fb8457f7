@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, ShieldCheck, Sparkles, Trophy, Truck, Zap } from "lucide-react";
+import { ArrowRight, Crown, Shield, Star, Truck } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -38,8 +38,7 @@ export default function Index() {
       });
   }, []);
 
-  const heroCards = useMemo(() => featured.slice(0, 2), [featured]);
-  const heroHeadline = heroCards[0]?.title || "Premium matchday jerseys";
+  const heroProduct = useMemo(() => featured[0], [featured]);
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,187 +46,163 @@ export default function Index() {
       toast({ title: "Enter your email", variant: "destructive" });
       return;
     }
-    toast({ title: "Subscribed", description: "You are now in the drop and restock list." });
+    toast({ title: "Subscribed!", description: "You'll be the first to know about new drops." });
     setEmail("");
   };
 
   return (
     <>
-      <section className="container py-8 md:py-12">
-        <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-[radial-gradient(circle_at_22%_14%,rgba(255,255,255,0.14),transparent_38%),radial-gradient(circle_at_88%_8%,rgba(0,211,190,0.18),transparent_35%),linear-gradient(130deg,#0f172a_0%,#1e293b_52%,#0f3e45_100%)] p-5 text-white shadow-[0_28px_80px_-28px_rgba(2,12,27,0.65)] md:p-8">
-          <div className="grid items-end gap-8 lg:grid-cols-[1.15fr_0.85fr]">
-            <div>
-              <p className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/80">
-                <Sparkles className="h-3.5 w-3.5" />
-                Reimagined 2026 Storefront
-              </p>
+      {/* HERO */}
+      <section className="relative overflow-hidden bg-foreground text-background">
+        <div className="absolute inset-0 opacity-20" style={{ backgroundImage: "radial-gradient(circle at 30% 20%, hsl(43 74% 49% / 0.4) 0%, transparent 50%), radial-gradient(circle at 80% 80%, hsl(43 74% 49% / 0.2) 0%, transparent 50%)" }} />
+        <div className="container relative py-16 md:py-24">
+          <div className="grid items-center gap-10 lg:grid-cols-2">
+            <div className="max-w-xl">
+              <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-primary">
+                <Crown className="h-3.5 w-3.5" />
+                Premium Collection
+              </div>
 
-              <h1 className="mt-4 text-balance text-4xl font-black leading-[0.92] tracking-tight md:text-6xl">
-                The modern home for
-                <span className="block text-cyan-300">authentic football jerseys.</span>
+              <h1 className="mt-6 text-5xl font-black leading-[0.95] tracking-tight md:text-7xl">
+                Wear the
+                <span className="block text-primary">legacy.</span>
               </h1>
 
-              <p className="mt-5 max-w-2xl text-sm leading-relaxed text-white/80 md:text-base">
-                Browse verified kits from top clubs and national teams with a faster shopping flow, stronger filtering, and clearer product details across desktop and mobile.
+              <p className="mt-6 text-base leading-relaxed text-background/70 md:text-lg">
+                Curated authentic football jerseys from the world's greatest clubs and national teams. Every shirt verified, every story preserved.
               </p>
 
-              <div className="mt-7 flex flex-wrap gap-3">
-                <Button asChild size="lg" className="bg-white font-semibold text-slate-950 hover:bg-white/90">
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Button asChild size="lg" className="gold-gradient border-0 px-8 font-semibold text-foreground hover:opacity-90">
                   <Link to="/shop">
-                    Shop Now
+                    Shop Collection
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
-                <Button asChild size="lg" variant="outline" className="border-white/30 bg-transparent font-semibold text-white hover:bg-white/10">
-                  <Link to="/shop?sort=newest">See New Arrivals</Link>
+                <Button asChild size="lg" variant="outline" className="border-background/20 bg-transparent font-semibold text-background hover:bg-background/10">
+                  <Link to="/shop?sort=newest">New Arrivals</Link>
                 </Button>
               </div>
+            </div>
 
-              <div className="mt-8 grid gap-3 sm:grid-cols-3">
-                {[
-                  { icon: Truck, title: "Fast Dispatch", value: "24-48h handling" },
-                  { icon: ShieldCheck, title: "Verified Stock", value: "100% authentic" },
-                  { icon: Zap, title: "Responsive UX", value: "Mobile-first UI" },
-                ].map((item) => (
-                  <div key={item.title} className="rounded-xl border border-white/20 bg-white/10 p-3 backdrop-blur">
-                    <item.icon className="h-4 w-4 text-cyan-300" />
-                    <p className="mt-2 text-[11px] uppercase tracking-[0.14em] text-white/70">{item.title}</p>
-                    <p className="text-sm font-semibold">{item.value}</p>
+            {heroProduct && (
+              <div className="flex justify-center lg:justify-end">
+                <Link to={`/product/${heroProduct.slug}`} className="group relative">
+                  <div className="absolute -inset-4 rounded-3xl bg-primary/10 blur-2xl transition-all group-hover:bg-primary/20" />
+                  <div className="relative aspect-[3/4] w-72 overflow-hidden rounded-2xl border border-background/10 shadow-2xl md:w-80">
+                    <img
+                      src={heroProduct.product_images?.[0]?.url || "/placeholder.svg"}
+                      alt={heroProduct.title}
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-5">
+                      <p className="text-sm font-semibold text-white">{heroProduct.title}</p>
+                      <p className="mt-1 text-lg font-bold text-primary">${Number(heroProduct.sale_price || heroProduct.price).toFixed(2)}</p>
+                    </div>
                   </div>
-                ))}
+                </Link>
               </div>
-            </div>
-
-            <div className="grid gap-3">
-              <div className="rounded-2xl border border-white/20 bg-white/10 p-4 backdrop-blur">
-                <p className="text-xs uppercase tracking-[0.14em] text-white/70">Featured highlight</p>
-                <p className="mt-2 text-xl font-bold leading-tight">{heroHeadline}</p>
-                <p className="mt-2 text-sm text-white/75">Curated weekly from the latest active catalog.</p>
-              </div>
-              <div className="grid gap-3 sm:grid-cols-2">
-                {heroCards.map((product) => (
-                  <Link key={product.id} to={`/product/${product.slug}`} className="group overflow-hidden rounded-2xl border border-white/20 bg-white/10">
-                    <div className="aspect-[4/5] overflow-hidden">
-                      <img
-                        src={product.product_images?.[0]?.url || "/placeholder.svg"}
-                        alt={product.title}
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                    </div>
-                    <div className="p-3">
-                      <p className="line-clamp-2 text-sm font-semibold leading-tight">{product.title}</p>
-                      <p className="mt-1 text-xs text-white/70">${Number(product.sale_price || product.price).toFixed(2)}</p>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </section>
 
+      {/* TRUST BAR */}
+      <section className="border-b border-border/60 bg-card">
+        <div className="container grid grid-cols-2 gap-4 py-6 md:grid-cols-4">
+          {[
+            { icon: Shield, label: "100% Authentic" },
+            { icon: Truck, label: "Fast Shipping" },
+            { icon: Star, label: "Premium Quality" },
+            { icon: Crown, label: "Exclusive Drops" },
+          ].map((item) => (
+            <div key={item.label} className="flex items-center gap-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10">
+                <item.icon className="h-4.5 w-4.5 text-primary" />
+              </div>
+              <span className="text-sm font-semibold">{item.label}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* CATEGORIES */}
       {categories.length > 0 && (
-        <section className="container pb-3">
-          <div className="flex flex-wrap gap-2">
-            {categories.slice(0, 6).map((category) => (
+        <section className="container py-10">
+          <h2 className="text-center text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">Browse by</h2>
+          <div className="mt-4 flex flex-wrap justify-center gap-2">
+            {categories.slice(0, 8).map((cat) => (
               <Link
-                key={category.id}
-                to={`/shop/${category.type}/${category.slug}`}
-                className="rounded-full border border-border/80 bg-white/70 px-4 py-2 text-sm font-semibold text-foreground/80 transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:text-foreground"
+                key={cat.id}
+                to={`/shop/${cat.type}/${cat.slug}`}
+                className="rounded-full border border-border bg-card px-5 py-2 text-sm font-semibold transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-sm"
               >
-                {category.name}
+                {cat.name}
               </Link>
             ))}
           </div>
         </section>
       )}
 
-      <section className="container py-12">
-        <div className="mb-6 flex items-center justify-between gap-3">
-          <h2 className="text-3xl font-black tracking-tight md:text-4xl">Trending Jerseys</h2>
-          <Link to="/shop" className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline">
-            View all
-            <ArrowRight className="h-4 w-4" />
+      {/* FEATURED PRODUCTS */}
+      <section className="container pb-16">
+        <div className="mb-8 flex items-end justify-between">
+          <div>
+            <h2 className="text-3xl font-black tracking-tight md:text-4xl">Trending Now</h2>
+            <p className="mt-1 text-sm text-muted-foreground">The most sought-after jerseys this season</p>
+          </div>
+          <Link to="/shop" className="hidden items-center gap-1 text-sm font-semibold text-primary hover:underline sm:inline-flex">
+            View all <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
 
         {featured.length > 0 ? (
-          <>
-            <div className="mb-4 grid gap-4 lg:grid-cols-[1.3fr_1fr]">
-              {featured[0] && (
-                <Link to={`/product/${featured[0].slug}`} className="group overflow-hidden rounded-2xl border border-border/80 bg-white/90 p-4 shadow-sm">
-                  <div className="grid gap-4 sm:grid-cols-[220px_1fr]">
-                    <div className="aspect-square overflow-hidden rounded-xl bg-muted">
-                      <img src={featured[0].product_images?.[0]?.url || "/placeholder.svg"} alt={featured[0].title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                    </div>
-                    <div className="flex flex-col justify-center">
-                      <p className="inline-flex w-fit items-center gap-1 rounded-full bg-primary/10 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-primary">
-                        <Trophy className="h-3.5 w-3.5" />
-                        Editor pick
-                      </p>
-                      <h3 className="mt-3 text-2xl font-bold leading-tight">{featured[0].title}</h3>
-                      <p className="mt-2 text-sm text-muted-foreground">
-                        Premium material, verified authenticity, and full variant support.
-                      </p>
-                      <p className="mt-3 text-lg font-bold text-foreground">${Number(featured[0].sale_price || featured[0].price).toFixed(2)}</p>
-                    </div>
-                  </div>
-                </Link>
-              )}
-              <div className="grid grid-cols-2 gap-4">
-                {featured.slice(1, 5).map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    slug={product.slug}
-                    title={product.title}
-                    price={product.price}
-                    salePrice={product.sale_price}
-                    image={product.product_images?.[0]?.url}
-                    teamName={product.categories?.name}
-                    jerseyType={product.cat_type?.name}
-                    seasonName={product.cat_season?.name}
-                  />
-                ))}
-              </div>
-            </div>
-            {featured.length > 5 && (
-              <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-                {featured.slice(5).map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    slug={product.slug}
-                    title={product.title}
-                    price={product.price}
-                    salePrice={product.sale_price}
-                    image={product.product_images?.[0]?.url}
-                    teamName={product.categories?.name}
-                    jerseyType={product.cat_type?.name}
-                    seasonName={product.cat_season?.name}
-                  />
-                ))}
-              </div>
-            )}
-          </>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+            {featured.map((product) => (
+              <ProductCard
+                key={product.id}
+                slug={product.slug}
+                title={product.title}
+                price={product.price}
+                salePrice={product.sale_price}
+                image={product.product_images?.[0]?.url}
+                teamName={product.categories?.name}
+                jerseyType={product.cat_type?.name}
+                seasonName={product.cat_season?.name}
+              />
+            ))}
+          </div>
         ) : (
           <div className="soft-panel p-10 text-center text-muted-foreground">
             <p className="text-lg font-semibold text-foreground">No products yet</p>
             <p className="mt-1 text-sm">Add products in admin to populate this section.</p>
           </div>
         )}
+
+        <div className="mt-6 text-center sm:hidden">
+          <Link to="/shop" className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline">
+            View all jerseys <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
       </section>
 
-      <section className="container py-4">
-        <div className="rounded-3xl border border-border/80 bg-white/85 p-6 backdrop-blur md:p-8">
-          <div className="grid gap-5 md:grid-cols-2 md:items-center">
-            <div>
-              <h3 className="text-2xl font-black tracking-tight md:text-3xl">Get early access to drops and restocks</h3>
-              <p className="mt-2 text-sm text-muted-foreground md:text-base">
-                Subscribe for curated release alerts, limited promotions, and major restock notifications.
-              </p>
-            </div>
-            <form className="flex flex-col gap-2 sm:flex-row" onSubmit={handleSubscribe}>
-              <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@email.com" className="h-11" />
-              <Button type="submit" className="h-11 px-6 font-semibold">
+      {/* NEWSLETTER */}
+      <section className="border-t border-border/60 bg-foreground text-background">
+        <div className="container py-14">
+          <div className="mx-auto max-w-2xl text-center">
+            <h3 className="text-3xl font-black tracking-tight md:text-4xl">Never Miss a Drop</h3>
+            <p className="mt-3 text-sm text-background/60">
+              Get early access to new arrivals, restocks, and exclusive promotions.
+            </p>
+            <form className="mt-6 flex flex-col gap-2 sm:flex-row sm:justify-center" onSubmit={handleSubscribe}>
+              <Input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="your@email.com"
+                className="h-12 border-background/20 bg-background/10 text-background placeholder:text-background/40 sm:w-72"
+              />
+              <Button type="submit" className="gold-gradient h-12 border-0 px-8 font-semibold text-foreground hover:opacity-90">
                 Subscribe
               </Button>
             </form>
