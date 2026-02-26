@@ -77,7 +77,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       password,
       options: {
         data: { full_name: fullName || '' },
-        emailRedirectTo: window.location.origin,
+        emailRedirectTo: 'https://goatgraphs.lovable.app',
       },
     });
     return { error };
@@ -94,7 +94,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const resetPassword = async (email: string) => {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
+      redirectTo: 'https://goatgraphs.lovable.app/reset-password',
     });
     return { error };
   };
